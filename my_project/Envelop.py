@@ -84,4 +84,4 @@ class Envelop(Scene):
         self.add(lines, dec_num,text)
         lines.add_updater(func)
         self.add(lines,dec_num)
-        self.play(t.set_value, 7, run_time=100, rate_func=linear)
+        self.play(t.set_value, 200, run_time=100, rate_func=linear)
