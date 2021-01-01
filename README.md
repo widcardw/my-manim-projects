@@ -1,4 +1,7 @@
 # 这是一个菜鸡从3b1b那里fork过来的库    
+
+[Here is the way to ReadMe in English](https://github.com/widcardw/my-manim-projects/blob/master/README.en.md)
+
 本来想放到 github 上面的，但是还是先放到 gitee 这边来吧，因为克隆/上传可以快一点   
 
 这个仓库包含了 manim_sandbox 的代码，毕竟是 MK 的成员，大家可以去 MK 看看：[Manim-Kindergarten](https://github.com/manim-kindergarten)

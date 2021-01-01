@@ -806,7 +806,7 @@ class ArrowTip(Triangle):
         self.set_width(self.length)
         self.set_height(self.length, stretch=True)
         if self.inner_smooth:
-            self.points[5:7] += np.array([-self.length * 0.5, 0, 0])
+            self.points[5:7] += np.array([-self.length * 0.4, 0, 0])
 
     def get_base(self):
         return self.point_from_proportion(0.5)

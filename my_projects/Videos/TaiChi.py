@@ -84,18 +84,8 @@ class TestBrace(Scene):
 
 class MyTextExp(Scene):
     def construct(self):
-        text1 = MyText("\\sum", "_{i=0}^", "\\infty", "{1", "\\over", "i}",
-                       default_font="times")
-        dict1 = {
-            "\\sum": "∞",
-            "_{i=0}^": "Σ",
-            "\\infty": "i=0",
-            "{1": "1",
-            "\\over": "-",
-            "i}": "i",
-        }
-        text2 = text1.get_new_font_texs(dict1)
-        self.add(text2)
+        arrow = Vector(RIGHT*4)
+        self.add(arrow)
 
 
 class TeXLaTeX(NewGraphScene):
