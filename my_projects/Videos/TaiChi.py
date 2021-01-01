@@ -1,0 +1,104 @@
+from manimlib.imports import *
+from manim_sandbox.utils.imports import *
+
+
+class Scene_(Scene):
+    CONFIG = {"camera_config": {"background_color": GREY}}
+
+
+class Scene1(Scene_):
+    def construct(self):
+        line1 = Line(ORIGIN, UP * 3, color=WHITE)
+        path1 = TracedPath(line1.get_end, stroke_color=WHITE, stroke_width=5)
+        line2 = Line(ORIGIN, DOWN * 3, color=BLACK)
+        path2 = TracedPath(line2.get_end, stroke_color=BLACK, stroke_width=5)
+        line1.save_state()
+        line2.save_state()
+        dot1 = Dot(ORIGIN, color=BLACK).scale(0.3)
+        dot2 = Dot(ORIGIN, color=WHITE).scale(0.3)
+        path11 = TracedPath(
+            dot1.get_center, stroke_color=BLACK, stroke_width=5)
+        path22 = TracedPath(
+            dot2.get_center, stroke_color=WHITE, stroke_width=5)
+        group1 = VGroup(line1, dot1)
+        group2 = VGroup(line2, dot2)
+
+        def ro(l, alpha):
+            l[0].restore()
+            l[0].rotate(PI * alpha, about_point=l[0].get_start())
+            l[1].move_to(l[0].point_from_proportion(np.sin(alpha / PI * 5)))
+
+        self.add(line1, line2, path1, path2, path11, path22)
+        self.wait(0.1)
+        self.play(UpdateFromAlphaFunc(group1, ro),
+                  UpdateFromAlphaFunc(group2, ro),
+                  rate_func=linear, run_time=6)
+        self.remove(line1, line2, dot1, dot2)
+        self.wait(0.1)
+
+
+class OffsetExample(Scene):
+    def construct(self):
+        tex = TexMobject(
+            r"1-{1\over 2}+{1\over 2}-{1\over 3}+{1\over 3}-{1\over 4}+\cdots+{1\over {n-1}}-{1\over n}")
+        self.add(tex)
+        debugTeX(self, tex[0])
+        # self.play(*[ShowCreationThenDestruction(SurroundingRectangle(obj))
+        #     for obj in [tex[0][1:5],tex[0][5:9],tex[0][9:13],tex[0][13:17],tex[0][25:31]]],
+        #     run_time=1.5, rate_func=sine)
+        # self.wait()
+        # self.play(*[FadeOutAndShift(obj, RIGHT*0.5, path_arc=-PI/2)
+        #     for obj in [tex[0][1:5],tex[0][9:13],tex[0][17:21]]],
+        #     *[FadeOutAndShift(obj, LEFT*0.5, path_arc=-PI/2)
+        #     for obj in [tex[0][5:9],tex[0][13:17],tex[0][21:25],tex[0][25:31]]],
+        #     run_time=2, rate_func=sine)
+        # self.wait()
+        # self.play(tex[0][0].shift,RIGHT*4.2,tex[0][31:].shift,LEFT*4.2)
+        # self.wait()
+
+
+class TestBrace(Scene):
+    def construct(self):
+        t1 = ValueTracker(2)
+        t2 = ValueTracker(2)
+
+        rect = Rectangle().add_updater(lambda a: a.become(Rectangle(
+            width=t1.get_value(), height=t2.get_value()
+        )))
+        brace_l = Brace(rect, LEFT)
+        label_l = DecimalNumber(0)
+        brace_d = Brace(rect, DOWN)
+        label_d = DecimalNumber(0)
+
+        brace_l.add_updater(lambda a: a.become(Brace(rect, LEFT)))
+        brace_d.add_updater(lambda a: a.become(Brace(rect, DOWN)))
+        label_l.add_updater(lambda a: a.set_value(
+            t1.get_value()).next_to(brace_l, LEFT))
+        label_d.add_updater(lambda a: a.set_value(
+            t2.get_value()).next_to(brace_d, DOWN))
+
+        self.add(rect, brace_l, brace_d, label_l, label_d)
+        self.play(t1.set_value, 8,
+                  t2.set_value, 4)
+
+
+class MyTextExp(Scene):
+    def construct(self):
+        text1 = MyText("\\sum", "_{i=0}^", "\\infty", "{1", "\\over", "i}",
+                       default_font="times")
+        dict1 = {
+            "\\sum": "∞",
+            "_{i=0}^": "Σ",
+            "\\infty": "i=0",
+            "{1": "1",
+            "\\over": "-",
+            "i}": "i",
+        }
+        text2 = text1.get_new_font_texs(dict1)
+        self.add(text2)
+
+
+class TeXLaTeX(NewGraphScene):
+    def construct(self):
+        text = TextMobject("こんにちは。")
+        self.add(text)

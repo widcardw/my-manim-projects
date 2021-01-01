@@ -1,0 +1,10 @@
+/media
+**/__pycache__/
+/.idea/
+/.vscode/
+*.pyc
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
