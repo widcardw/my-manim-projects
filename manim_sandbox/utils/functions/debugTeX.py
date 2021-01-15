@@ -46,6 +46,16 @@ class AllPointsIndex(VGroup):
             point_id.move_to(points)
             self.add(point_id)
 
+    def update_position(self, obj):
+        def anim(k):
+            for i, point in enumerate(obj.get_all_points()):
+                k.submobjects[i].move_to(point)
+
+        self.add_updater(anim)
+
+    def update_obj(self, obj, **kwargs):
+        self.become(AllPointsIndex(obj, **kwargs))
+
 
 class PointIndex(VGroup):
     CONFIG = {

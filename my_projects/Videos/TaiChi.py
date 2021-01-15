@@ -84,11 +84,22 @@ class TestBrace(Scene):
 
 class MyTextExp(Scene):
     def construct(self):
-        arrow = Vector(RIGHT*4)
+        arrow = Vector(RIGHT * 4)
         self.add(arrow)
 
 
 class TeXLaTeX(NewGraphScene):
     def construct(self):
-        text = TextMobject("こんにちは。")
-        self.add(text)
+        cir = Circle().scale(3)
+        pot = AllPointsIndex(cir)
+        # pot.add_updater(lambda a: a.become(AllPointsIndex(cir)))
+        pot.update_position(cir)
+        self.add(cir, pot)
+        self.play(ShowCreation(cir))
+        self.play(cir.shift, RIGHT * 2)
+        squ = Square().scale(2)
+        # pot.clear_updaters()
+        # pot.update_obj(squ)
+        # pot.update_position(squ)
+        self.play(Transform(cir, squ))
+        self.wait()
