@@ -11,10 +11,12 @@ class OneDim(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -29,10 +31,12 @@ class TwoDim(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -48,10 +52,12 @@ class ThreeDim(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=7)
         self.wait()
 
@@ -68,10 +74,12 @@ class FourDim(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -89,10 +97,12 @@ class FiveDim(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -112,9 +122,11 @@ class SixDim(DarkScene):
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
         obj[1].add_updater(line_anim)
+        path = obj.curve_path
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -125,10 +137,12 @@ class Six(DarkScene):
         obj = BezierGenerator(dot_lst)
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
+        path = obj.curve_path
         obj[1].add_updater(line_anim)
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
@@ -141,9 +155,14 @@ class Four(DarkScene):
         dot_anim = obj.dot_anim
         line_anim = obj.sync_line
         obj[1].add_updater(line_anim)
+        path = obj.curve_path
+
+        # pts = AllPointsIndex(path)
+
         self.add(obj)
         self.wait()
         self.play(UpdateFromAlphaFunc(obj[0], dot_anim),
+                  ShowCreation(path),
                   run_time=6.5)
         self.wait()
 
