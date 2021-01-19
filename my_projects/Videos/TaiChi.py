@@ -103,3 +103,18 @@ class TeXLaTeX(NewGraphScene):
         # pot.update_position(squ)
         self.play(Transform(cir, squ))
         self.wait()
+
+
+class TestArrow(Scene):
+    def construct(self):
+        dots = np.array([
+            [-3, -3, 0],
+            [-1, -2, 0],
+            [0, 2, 0],
+            [3, -2, 0],
+            [4, 1, 0]
+        ])
+        path = TipableVMobject()
+        path.set_points_smoothly(dots)
+        path.add_tip(tip_style=1)
+        self.add(path)

@@ -17,6 +17,8 @@ from manimlib.utils.space_ops import line_intersection
 from manimlib.utils.space_ops import get_norm
 from manimlib.utils.space_ops import normalize
 from manimlib.utils.space_ops import rotate_vector
+from manimlib.utils.bezier import bezier
+from manimlib.utils.bezier import interpolate
 
 DEFAULT_DOT_RADIUS = 0.08
 DEFAULT_SMALL_DOT_RADIUS = 0.04
@@ -51,33 +53,37 @@ class TipableVMobject(VMobject):
             "fill_opacity": 1,
             "stroke_width": 0,
         },
-        "tip_look": "triangle",
+        "tip_style": 1,
     }
 
     # Adding, Creating, Modifying tips
 
-    def add_tip(self, tip_length=None, at_start=False, tip_look="triangle"):
+    def add_tip(self, tip_length=None, at_start=False, tip_style=1):
         """
         Adds a tip to the TipableVMobject instance, recognising
         that the endpoints might need to be switched if it's
         a 'starting tip' or not.
+        tip_style=0 => default triangle
+        tip_style=1 => inner smooth  # default
+        tip_style=2 => arrow tip
+        tip_style=3 => dot
         """
-        tip = self.create_tip(tip_length, at_start, tip_look)
+        tip = self.create_tip(tip_length, at_start, tip_style)
         self.reset_endpoints_based_on_tip(tip, at_start)
         self.asign_tip_attr(tip, at_start)
         self.add(tip)
         return self
 
-    def create_tip(self, tip_length=None, at_start=False, tip_look="triangle"):
+    def create_tip(self, tip_length=None, at_start=False, tip_style=1):
         """
         Stylises the tip, positions it spacially, and returns
         the newly instantiated tip to the caller.
         """
-        tip = self.get_unpositioned_tip(tip_length, tip_look)
-        self.position_tip(tip, at_start, tip_look)
+        tip = self.get_unpositioned_tip(tip_length, tip_style)
+        self.position_tip(tip, at_start, tip_style)
         return tip
 
-    def get_unpositioned_tip(self, tip_length=None, tip_look="triangle"):
+    def get_unpositioned_tip(self, tip_length=None, tip_style=1):
         """
         Returns a tip that has been stylistically configured,
         but has not yet been given a position in space.
@@ -89,14 +95,10 @@ class TipableVMobject(VMobject):
             "fill_color": color,
             "stroke_color": color
         }
-        style.update(self.tip_style)
-        if tip_look == "dot":
-            tip = Dot(width=tip_length, **style)
-        else:
-            tip = ArrowTip(length=tip_length, **style)
+        tip = ArrowTip(length=tip_length, tip_style=tip_style, **style)
         return tip
 
-    def position_tip(self, tip, at_start=False, tip_look="triangle"):
+    def position_tip(self, tip, at_start=False, tip_style=1):
         # Last two control points, defining both
         # the end, and the tangency direction
         if at_start:
@@ -105,13 +107,10 @@ class TipableVMobject(VMobject):
         else:
             handle = self.get_last_handle()
             anchor = self.get_end()
-        if tip_look == "dot":
-            pass
-        else:
-            tip.rotate(
-                angle_of_vector(handle - anchor) -
-                PI - tip.get_angle()
-            )
+        tip.rotate(
+            angle_of_vector(handle - anchor) -
+            PI - tip.get_angle()
+        )
         tip.shift(anchor - tip.get_tip_point())
         return tip
 
@@ -798,18 +797,39 @@ class ArrowTip(Triangle):
         "stroke_width": 0,
         "length": DEFAULT_ARROW_TIP_LENGTH,
         "start_angle": PI,
-        "inner_smooth": True,
+        "tip_style": 1,  # 0==default,1==smooth,2==arrow,3==dot
     }
 
     def __init__(self, **kwargs):
         Triangle.__init__(self, **kwargs)
         self.set_width(self.length)
         self.set_height(self.length, stretch=True)
-        if self.inner_smooth:
+        if self.tip_style == 1:
+            self.set_height(self.length * 0.9, stretch=True)
             self.points[5:7] += np.array([-self.length * 0.4, 0, 0])
+        elif self.tip_style == 2:
+            self.set_height(self.length * 0.8, stretch=True)
+            dot_a = self.points[0]
+            dot_b = self.points[4]
+            dot_c = (self.points[4] + self.points[8]) / 2 - np.array([self.length * 0.36, 0, 0])
+            dot_d = self.points[8]
+            self.clear_points()
+            self.append_points([dot_a])
+            self.add_line_to(dot_b)
+            self.add_line_to(dot_c)
+            self.add_line_to(dot_d)
+            self.add_line_to(dot_a)
+        elif self.tip_style == 3:
+            h = self.length / 2
+            self.clear_points()
+            self.points = Dot().set_width(h).get_points()
 
     def get_base(self):
-        return self.point_from_proportion(0.5)
+        return interpolate(
+            self.point_from_proportion(0.5),
+            self.get_center(),
+            0.1
+        )
 
     def get_tip_point(self):
         return self.points[0]
