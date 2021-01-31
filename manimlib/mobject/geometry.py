@@ -53,12 +53,12 @@ class TipableVMobject(VMobject):
             "fill_opacity": 1,
             "stroke_width": 0,
         },
-        "tip_style": 1,
+        "tip_look": 1,
     }
 
     # Adding, Creating, Modifying tips
 
-    def add_tip(self, tip_length=None, at_start=False, tip_style=1):
+    def add_tip(self, tip_length=None, at_start=False, tip_look=1):
         """
         Adds a tip to the TipableVMobject instance, recognising
         that the endpoints might need to be switched if it's
@@ -68,22 +68,22 @@ class TipableVMobject(VMobject):
         tip_style=2 => arrow tip
         tip_style=3 => dot
         """
-        tip = self.create_tip(tip_length, at_start, tip_style)
+        tip = self.create_tip(tip_length, at_start, tip_look)
         self.reset_endpoints_based_on_tip(tip, at_start)
         self.asign_tip_attr(tip, at_start)
         self.add(tip)
         return self
 
-    def create_tip(self, tip_length=None, at_start=False, tip_style=1):
+    def create_tip(self, tip_length=None, at_start=False, tip_look=1):
         """
         Stylises the tip, positions it spacially, and returns
         the newly instantiated tip to the caller.
         """
-        tip = self.get_unpositioned_tip(tip_length, tip_style)
-        self.position_tip(tip, at_start, tip_style)
+        tip = self.get_unpositioned_tip(tip_length, tip_look)
+        self.position_tip(tip, at_start, tip_look)
         return tip
 
-    def get_unpositioned_tip(self, tip_length=None, tip_style=1):
+    def get_unpositioned_tip(self, tip_length=None, tip_look=1):
         """
         Returns a tip that has been stylistically configured,
         but has not yet been given a position in space.
@@ -95,7 +95,8 @@ class TipableVMobject(VMobject):
             "fill_color": color,
             "stroke_color": color
         }
-        tip = ArrowTip(length=tip_length, tip_style=tip_style, **style)
+        style.update(self.tip_style)
+        tip = ArrowTip(length=tip_length, tip_look=tip_look, **style)
         return tip
 
     def position_tip(self, tip, at_start=False, tip_style=1):
@@ -797,29 +798,25 @@ class ArrowTip(Triangle):
         "stroke_width": 0,
         "length": DEFAULT_ARROW_TIP_LENGTH,
         "start_angle": PI,
-        "tip_style": 1,  # 0==default,1==smooth,2==arrow,3==dot
+        "tip_look": 1,  # 0==default,1==smooth,2==arrow,3==dot
     }
 
     def __init__(self, **kwargs):
         Triangle.__init__(self, **kwargs)
         self.set_width(self.length)
         self.set_height(self.length, stretch=True)
-        if self.tip_style == 1:
+        if self.tip_look == 1:
             self.set_height(self.length * 0.9, stretch=True)
             self.points[5:7] += np.array([-self.length * 0.4, 0, 0])
-        elif self.tip_style == 2:
+        elif self.tip_look == 2:
             self.set_height(self.length * 0.8, stretch=True)
             dot_a = self.points[0]
             dot_b = self.points[4]
             dot_c = (self.points[4] + self.points[8]) / 2 - np.array([self.length * 0.36, 0, 0])
             dot_d = self.points[8]
             self.clear_points()
-            self.append_points([dot_a])
-            self.add_line_to(dot_b)
-            self.add_line_to(dot_c)
-            self.add_line_to(dot_d)
-            self.add_line_to(dot_a)
-        elif self.tip_style == 3:
+            self.set_points_as_corners([dot_a, dot_b, dot_c, dot_d, dot_a])
+        elif self.tip_look == 3:
             h = self.length / 2
             self.clear_points()
             self.points = Dot().set_width(h).get_points()

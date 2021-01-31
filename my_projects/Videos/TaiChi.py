@@ -116,5 +116,51 @@ class TestArrow(Scene):
         ])
         path = TipableVMobject()
         path.set_points_smoothly(dots)
-        path.add_tip(tip_style=1)
+        path.add_tip(tip_look=1)
         self.add(path)
+
+
+class TestVMobject(Scene):
+    def construct(self):
+        dots = np.array([
+            [-6, -3, 0],
+            [-5, 3, 0],
+            [-4, 2, 0],
+            [-3, -1, 0],
+            [-2, 2, 0],
+            [-1, 0, 0],
+            [0, 3.5, 0],
+            [1, 2, 0]
+        ])
+        for i in dots:
+            self.add(Dot(i))
+        path = VMobject(n_points_per_cubic_curve=8)
+        path.points = dots
+        self.add(path)
+
+
+class ColorByCaracterFixed(Scene):
+    def construct(self):
+        text = TexMobject("{d", "\\over", "d", "x", "}", "\\int_", "{a}^", "{", "x", "}", "f(", "t", ")d", "t", "=",
+                          "f(", "x", ")")
+        text.set_color_by_tex_to_color_map({"x": RED})
+        text[6].set_color(RED)
+        text[8].set_color(WHITE)
+        self.play(Write(text))
+        self.wait(2)
+
+
+class Danmaku(Scene):
+    def construct(self):
+        n = 130
+        color_list = [RED, ORANGE, GOLD, YELLOW, GREEN, TEAL, BLUE, PURPLE]
+        dg = VGroup(*[Dot(np.array([7 * (i / n) ** 1.8, 0, 0])).scale(3 * i / n)
+                      for i in range(n)]).set_color_by_gradient(*color_list)
+
+        def anim(obj, dt):
+            for i in range(n):
+                obj[i].rotate((n - i) / n * 8 * dt, about_point=ORIGIN)
+
+        dg.add_updater(anim)
+        self.add(dg)
+        self.wait(100)

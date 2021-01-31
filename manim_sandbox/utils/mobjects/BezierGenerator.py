@@ -82,6 +82,57 @@ class BezierGenerator(VGroup):
         # 另外,put_start_and_end_on不支持三维,如果要用到三维那么可能只能用become了
 
 
+'''
+class MakeBezier(Animation):  # 尚不完善, 路径的绘制有问题, 暂时先用MakeBezier2
+    CONFIG = {
+        "rate_func": smooth,
+        "run_time": 6,
+    }
+
+    def __init__(self, mobject, **kwargs):
+        super().__init__(mobject, **kwargs)
+        assert (isinstance(mobject, BezierGenerator))
+        self.mobject = mobject
+        self.curve_path = mobject.curve_path
+        self.dot_anim = mobject.dot_anim
+        self.sync_line = mobject.sync_line
+
+    def interpolate_mobject(self, alpha):
+        self.dot_anim(self.mobject[0], alpha)  # 查阅UpdateFromAlphaFunc
+        self.sync_line(self.mobject[1])  # 查阅UpdateFromFunc
+        self.interpolate_path(self.curve_path, alpha)
+
+    def interpolate_path(self, path, alpha):
+        families = list(zip(*[
+            mob.family_members_with_points()
+            for mob in [path, path.copy()]
+        ]))
+        for i, mobs in enumerate(families):
+            sub_alpha = self.get_sub_alpha(alpha, i, len(families))
+            path.pointwise_become_partial(path.copy(), 0, sub_alpha)
+'''
+
+
+class MakeBezier2(AnimationGroup):
+    CONFIG = {
+        "lag_ratio": 0,
+        "rate_func": smooth,
+        "run_time": 6,
+    }
+
+    def __init__(self, mobject, **kwargs):
+        assert (isinstance(mobject, BezierGenerator))
+        dot_anim = mobject.dot_anim
+        sync_line = mobject.sync_line
+        curve_path = mobject.curve_path
+        super().__init__(
+            UpdateFromAlphaFunc(mobject[0], dot_anim),
+            UpdateFromFunc(mobject[1], sync_line),
+            ShowCreation(curve_path),
+            **kwargs
+        )
+
+
 # 使用例desu
 class TestBezier(Scene):
     def construct(self):
@@ -101,3 +152,15 @@ class TestBezier(Scene):
                   ShowCreation(path),  # 播放贝塞尔曲线的创建动画,与上面的同步
                   run_time=4
                   )
+
+
+class TestBezier2(Scene):
+    def construct(self):
+        dot_lst = [
+            np.array([-3, -3, 0]),
+            np.array([-3, 3, 0]),
+            np.array([3, 3, 0]),
+            np.array([3, -3, 0]),
+        ]
+        obj = BezierGenerator(dot_lst)
+        self.play(MakeBezier2(obj))
