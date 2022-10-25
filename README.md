@@ -24,63 +24,22 @@ Python 的报错有相当完整的 Traceback ，在熟悉 Python 语法之后，
 
 在此还是忍不住想挂 “红绿蓝” 这位前群友
 
+> 2021-08-24\
+> **widcardw** 了解一下什么叫对象，什么叫传入方法\
+> 
+> **红绿蓝** 我只追求最简单的设计\
+> **红绿蓝** 花里胡哨的交给你们了\
+> **红绿蓝** 我要做精品设计\
+> **红绿蓝** 这个为什么报错？
+>
+> ```python
+> np.-1/x
+> ```
+>
+> **群友 A** 翔哥息怒 🧯🧯🧯\
+> **群友 B** 翔哥息怒 🧯🧯🧯\
+> **群友 C** 翔哥息怒 🧯🧯🧯
 
-<div class="chat-container">
-    <div style="text-align: center;">
-        2021-08-24
-    </div>
-    <div class="message" style="justify-content: end;">
-        <div class="bubble">
-            了解一下什么叫对象，什么叫传入方法
-        </div>
-        <div class="person">widcardw</div>
-    </div>
-    <div class="message">
-        <div class="person">红绿蓝</div>
-        <div class="bubble">
-            我只追求最简单的设计
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">红绿蓝</div>
-        <div class="bubble">
-            花里胡哨的交给你们了
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">红绿蓝</div>
-        <div class="bubble">
-            我要做精品设计
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">红绿蓝</div>
-        <div class="bubble">
-            这个为什么报错？
-            <pre>np.-1/x</pre>
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">群友 A</div>
-        <div class="bubble">
-            翔哥息怒 🧯🧯🧯
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">群友 B</div>
-        <div class="bubble">
-            翔哥息怒 🧯🧯🧯
-        </div>
-    </div>
-    <div class="message">
-        <div class="person">群友 C</div>
-        <div class="bubble">
-            翔哥息怒 🧯🧯🧯
-        </div>
-    </div>
-</div>
-
-<br />
 
 因此，翔哥编写了 [manim 从没入门到被劝退](https://manim.org.cn/problems/persuade2quit)。
 
