@@ -1,8 +1,7 @@
 from manimlib import *
 
-
 class Bullet(ArrowTip):
-    def __init__(self, vector: np.ndarray = RIGHT, **kwargs):
+    def __init__(self, vector: npt.NDArray[np.float64] = RIGHT, **kwargs):
         super().__init__(**kwargs)
         self.data["points"][4] += LEFT*0.5
         self.scale(0.3)
@@ -87,4 +86,3 @@ class SquareDanmaku(Scene):
 
         vg.add_updater(update_danmaku)
         self.add(vg)
-        self.wait(20)

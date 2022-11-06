@@ -10,17 +10,21 @@ class TestRiemann(InteractiveScene):
         )
         self.add(axes)
         self.add(graph)
-        rects = axes.get_riemann_rectangles(graph, [-8, 8, 1], stroke_background=True)
+        rects = axes.get_riemann_rectangles(
+            graph, [-8, 8, 1], stroke_background=True)
         self.play(ShowCreation(rects))
         self.wait(0.5)
         self.play(
-            rects.animate.become(axes.get_riemann_rectangles(graph, [-8, 8, 0.5], stroke_background=True))
+            rects.animate.become(axes.get_riemann_rectangles(
+                graph, [-8, 8, 0.5], stroke_background=True))
         )
         self.wait(0.5)
         self.play(
-            rects.animate.become(axes.get_riemann_rectangles(graph, [-8, 8, 0.25], stroke_background=True))
+            rects.animate.become(axes.get_riemann_rectangles(
+                graph, [-8, 8, 0.25], stroke_background=True))
         )
         self.wait(0.5)
         self.play(
-            rects.animate.become(axes.get_riemann_rectangles(graph, [-8, 8, 0.125], stroke_background=True))
+            rects.animate.become(axes.get_riemann_rectangles(
+                graph, [-8, 8, 0.125], stroke_background=True))
         )

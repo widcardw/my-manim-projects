@@ -1,9 +1,13 @@
 from manimlib import *
 
+
 class TestDepthTest(Scene):
     def construct(self) -> None:
-        square = Square(fill_opacity=0.5, fill_color=BLUE_E)
-        square.apply_depth_test()
-        line = Line(OUT, IN)
+        axes = ThreeDAxes()
+        line = Line(np.array([0, 0, 0]), np.array([3, 3, 3]))
+        sphere = Sphere(color=BLUE)
         line.apply_depth_test()
-        self.add(line, square )
+        sphere.apply_depth_test()
+        axes.apply_depth_test()
+
+        self.add(axes, sphere, line)
