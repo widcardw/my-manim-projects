@@ -1,11 +1,11 @@
-from manimlib import IN, ORIGIN, OUT, PI, PURPLE, RED, UP, Integer, LaggedStartMap, Scene, Square, Text, VGroup, RIGHT, Mobject, integer_interpolate, interpolate, interpolate_color, linear, np
-
-from manimlib.animation.animation import Animation
-
-from manimlib.animation.update import UpdateFromAlphaFunc
+from manimlib import Animation, PI, PURPLE, RED, UP, UpdateFromAlphaFunc, LaggedStartMap, Scene, Square, Text, VGroup, RIGHT, Mobject, integer_interpolate, interpolate, interpolate_color, linear, np
 
 
 class RotateFadeIn(Animation):
+    CONFIG = {
+        'rate_func': linear
+    }
+
     def interpolate_mobject(self, alpha: float) -> None:
         index, subalpha = integer_interpolate(0, 2, alpha)
         self.mobject.become(self.starting_mobject)
@@ -40,9 +40,9 @@ class CSquare(Square):
 class Aniplex(Scene):
     def construct(self) -> None:
         ani = VGroup(*[
-            Text(i, font="Arial", slant="italic", bold="BOLD").scale(3)
+            Text(i, font="Arial", slant="italic", bold="BOLD").scale(2.5)
             for i in 'ANIPLEX'
-        ]).arrange(RIGHT, buff=0.5)
+        ]).arrange(RIGHT, buff=0.7)
 
         squs = VGroup(*[
             CSquare(side_length=1.5, color=PURPLE).move_to(ani[0])
@@ -71,7 +71,8 @@ class Aniplex(Scene):
                     mob.scale(1.5 - subalpha1 / 2)
                 index2, subalpha2 = integer_interpolate(0, 4, alpha)
                 mob.rotate(-mob.angle, axis=UP)
-                mob.rotate(np.sin(PI * (index2 + subalpha2)) + PI / 2, axis=UP)
+                mob.rotate(-np.sin(PI * (index2 + subalpha2)) +
+                           PI / 2, axis=UP)
                 mob.set_color(
                     interpolate_color(
                         interpolate_color(PURPLE, RED, alpha),
@@ -84,18 +85,16 @@ class Aniplex(Scene):
         self.wait()
         self.add(squs)
         self.play(
-            LaggedStartMap(RotateFadeIn, ani, lag_ratio=0.1),
+            LaggedStartMap(RotateFadeIn, ani, lag_ratio=0.3),
             *[
                 UpdateFromAlphaFunc(squs[i], gene_updater(i))
                 for i in range(len(squs))
             ],
-            # UpdateFromAlphaFunc(square, square_anim),
-            # UpdateFromAlphaFunc(squs, update_group),
-            run_time=2, rate_func=linear)
-        print(list(map(lambda a: a.angle, squs)))
+            run_time=2.5, rate_func=linear)
         # self.remove(square)
         self.play(*[
-            squs[i].animate.rotate(-squs[i].angle - i * PI / (len(squs) - 1) + (0 if i * PI / (len(squs) - 1) < PI / 2 else PI), axis=UP)
+            squs[i].animate.rotate(-squs[i].angle - i *
+                                   PI / (len(squs) - 1) + PI, axis=UP)
             for i in range(len(squs))
         ], run_time=0.5)
         self.wait()
