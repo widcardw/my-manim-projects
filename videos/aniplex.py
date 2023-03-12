@@ -1,4 +1,4 @@
-from manimlib import Animation, PI, PURPLE, RED, UP, UpdateFromAlphaFunc, LaggedStartMap, Scene, Square, Text, VGroup, RIGHT, Mobject, integer_interpolate, interpolate, interpolate_color, linear, np
+from manimlib import Animation, PI, PURPLE, RED, UP, UpdateFromAlphaFunc, LaggedStartMap, Scene, Square, Text, VGroup, RIGHT, Mobject, VMobject, integer_interpolate, interpolate, interpolate_color, linear, np
 
 
 class RotateFadeIn(Animation):
@@ -54,7 +54,7 @@ class Aniplex(Scene):
         squs.set_stroke(opacity=0)
 
         def gene_updater(index: int):
-            def updater(mob: Mobject, a: float):
+            def updater(mob: CSquare, a: float):
                 cur, al = integer_interpolate(0, 6, a)
                 if cur < index - 1:
                     return

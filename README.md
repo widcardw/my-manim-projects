@@ -52,24 +52,3 @@ Python 的报错有相当完整的 Traceback ，在熟悉 Python 语法之后，
 widcardw
 
 2022-08-20
-
-
-<style>
-.chat-container {
-    border: 1px solid #7f7f7f40;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-}
-.message {
-    display: flex;
-    margin: 0.5rem 0;
-}
-.person {
-    padding: 0.5rem;
-}
-.bubble {
-    background: #7f7f7f20;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-}
-</style>
