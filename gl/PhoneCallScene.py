@@ -15,7 +15,7 @@ class PhoneCallScene(Scene):
         self.weight = weight
         self.angle = 0
         self.cur_rotate = 0
-        self.rotate_prob = 0.5
+        self.rotate_prob = 0.65
 
     def construct(self):
         frame = self.camera.frame
@@ -65,7 +65,7 @@ class PhoneCallScene(Scene):
 class Scene1(PhoneCallScene):
     def construct(self):
         text = []
-        with open("my_videos/videos/script.txt", encoding="utf-8") as fin:
+        with open("my_videos/gl/scripts.txt", encoding="utf-8") as fin:
             for line in fin:
                 text.append(line)
         # print(text)

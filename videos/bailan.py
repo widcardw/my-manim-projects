@@ -26,7 +26,7 @@ class 超牛逼文字动画(Scene):
             return obj.animate.scale(1 + random.random())
 
         def objanim2(obj):
-            return Restore(obj)
+            return obj.animate.restore()
 
         for k in range(60):
             random.shuffle(ll)
